@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Res } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Req, Res } from '@nestjs/common';
 import { AppService } from './app.service';
 import type { Request, Response } from 'express';
 
@@ -6,18 +6,8 @@ import type { Request, Response } from 'express';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  fetchRequest(@Req() req: Request, @Res() res: Response) {
-    const { id } = req.params;
-    const queryParams = req.query;
-    const userAgent = req.headers['user-agent'];
-
-    res.send(`
-      <script>
-        console.log('Request ID: ${id}');
-        console.log('Query Parameters: ${JSON.stringify(queryParams)}');
-        console.log('User Agent: ${userAgent}');
-      </script>
-    `);
+  @Get(':id')
+  getId(@Param('id', ParseIntPipe) id: number) {
+    return `The id is ${id}`;
   }
 }
