@@ -1,13 +1,28 @@
-import { Controller, Get, Param, ParseIntPipe, Req, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import type { Request, Response } from 'express';
+import { UserService } from './services/user/user.service';
+import { UserDto } from './userDto/user.dto';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly userService: UserService) {}
 
-  @Get(':id')
-  getId(@Param('id', ParseIntPipe) id: number) {
-    return `The id is ${id}`;
+  @Post()
+  createUser() {
+    return `User created successfully`;
+  }
+
+  @Get()
+  getAllUsers(): UserDto[] {
+    return this.userService.getAllUsers();
   }
 }
